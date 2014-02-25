@@ -5,6 +5,10 @@
  */
 
 package tiroparabolico;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Polygon;
+import javax.swing.JFrame;
 
 /**
  *
@@ -18,5 +22,6 @@ public class TiroParabolico {
     public static void main(String[] args) {
         // TODO code application logic here
     }
+    
     
 }
