@@ -15,12 +15,15 @@ import javax.swing.JFrame;
  * @author Gonzalez
  */
 public class TiroParabolico {
-//hola
+//hola adios
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         // TODO code application logic here
+    }
+    public static void hola() {
+        
     }
     
     
