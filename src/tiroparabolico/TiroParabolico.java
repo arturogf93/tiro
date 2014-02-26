@@ -15,7 +15,7 @@ import javax.swing.JFrame;
  * @author Gonzalez
  */
 public class TiroParabolico {
-//hola adios
+//ME LA PELAS
     /**
      * @param args the command line arguments
      */
