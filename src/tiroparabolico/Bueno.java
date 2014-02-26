@@ -50,13 +50,8 @@ public class Bueno extends Base {
     public void colision(int width, int height) {       //Metodo para saber si colisiono con el applet
         if (this.getPosX() + this.getWidth() >= width) {
             this.setPosX(width - this.getWidth());
-        } else if (this.getPosX() <= 0) {
-            this.setPosX(0);
-        }
-        if (this.getPosY() + this.getHeight() >= height) {
-            this.setPosY(height - this.getHeight());
-        } else if (this.getPosY() <= 0) {
-            this.setPosY(0);
-        }
+        } else if (this.getPosX() <= width/2) {
+            this.setPosX(width/2);
+        } 
     }
 }
