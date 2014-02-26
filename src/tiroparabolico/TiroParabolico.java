@@ -3,28 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package tiroparabolico;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Polygon;
+
 import javax.swing.JFrame;
 
 /**
  *
- * @author Gonzalez
+ * @author Abraham
  */
-public class TiroParabolico {
-//ME LA PELAS
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
-    public static void hola() {
-        
+public class TiroParabolico{
+
+    
+    public TiroParabolico(){
+
     }
     
+    public static void main(String[] args) {
+        AppletExamen1 variable;
+        variable = new AppletExamen1();
+        variable.setVisible(true);
+        variable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
     
 }
