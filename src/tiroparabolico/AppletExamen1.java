@@ -25,10 +25,12 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     }
 
     private Bueno heroe;                //Objeto tipo Bueno
+    private Malo bomba;
     private Graphics dbg;               //Objeto tipo Graphics
     private Image dbImage;              //Imagen para el doblebuffer    
     private long tiempoActual;          //Long para el tiempo del applet
     private boolean movimiento;         //Booleano si esta en movimient
+    private boolean bombamueve;
     private boolean pausa;              //Booleando para pausa
     private int direccion;              //entero para la direccion
     private SoundClip chCacha;          //audio para el heroe
@@ -46,8 +48,9 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         setBackground(Color.RED);     //fondo negra
         movimiento = false;             // al principi esta quirto
         heroe = new Bueno(0, 0);
+        bomba = new Malo(30, 30, 0, 0);
         heroe.setPosX((this.getWidth() * 6) / 8 - (new ImageIcon(heroe.getImagen())).getIconWidth() / 2);   //posicion x del Bueno
-        heroe.setPosY(this.getHeight() - (new ImageIcon(heroe.getImagen())).getIconHeight()-2);    //posicion y del Bueno
+        heroe.setPosY(this.getHeight() - (new ImageIcon(heroe.getImagen())).getIconHeight() - 2);    //posicion y del Bueno
         addMouseListener(this);
         addMouseMotionListener(this);
         //URL eaURL = this.getClass().getResource("chocaHeroe.wav");
@@ -98,8 +101,11 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         tiempoActual += tiempoTranscurrido;
 
         //Actualiza la animación en base al tiempo transcurrido
+        if (bombamueve) {
+            (bomba.getImagenes()).actualiza(tiempoActual);
+        }
         if (movimiento) {//Si se mueve se actualiza
-            (heroe.getImagenes()).actualiza(tiempoActual);   
+            (heroe.getImagenes()).actualiza(tiempoActual);
         }
         heroe.setPosX(heroe.getPosX() + direccion);
         direccion = 0;
@@ -113,9 +119,9 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         heroe.colision(this.getWidth(), this.getHeight());        //Checa colision del heroe con el applet
         if (direccion == 1 && direccion == 2) {
             movimiento = true;
-        }
-        else 
+        } else {
             movimiento = false;
+        }
     }
 
     /**
@@ -155,14 +161,13 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     public void keyPressed(KeyEvent e) {
         // Presiono izq
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-            movimiento = true;  
+            movimiento = true;
             direccion = -2;
         } //Presiono der
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             movimiento = true;
             direccion = 2;
-        }
-        else{
+        } else {
             direccion = 0;
             movimiento = false;
         }
@@ -197,7 +202,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 pausa = true;
             }
         }
-        
+
         // Presiono izq
     }
 
@@ -210,9 +215,10 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      * @param g es el <code>objeto grafico</code> usado para dibujar.
      */
     public void paint1(Graphics g) {
-        if (heroe != null) {
+        if (heroe != null && bomba != null) {
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(heroe.getImagen(), heroe.getPosX(), heroe.getPosY(), this);
+            g.drawImage(bomba.getImagen(), bomba.getPosX(), bomba.getPosY(), this);
             if (pausa) {
                 g.setColor(Color.WHITE);
                 g.drawString("" + heroe.getPAUSADO(), heroe.getPosX() - heroe.getWidth() / 7, heroe.getPosY() + (heroe.getHeight() / 2));
@@ -228,10 +234,10 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     public void mouseClicked(MouseEvent e) {
         int x = e.getX();
         int y = e.getY();
-        if (heroe.dentro(x, y)) { // se da clic dentro del heroe
+        if (bomba.dentro(x, y)) { // se da clic dentro del heroe
+            bombamueve = true;
         }
     }
- 
 
     public void mouseEntered(MouseEvent e) {
     }

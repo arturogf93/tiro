@@ -24,12 +24,22 @@ public class Malo extends Base {
         super(posX, posY);
         this.velocidad = velocidad;
         this.cont = cont;
-        Image bat1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Bat1.png"));
-        Image bat2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Bat2.png"));
-        Image bat3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/Bat3.png"));
-        (this.getImagenes()).sumaCuadro(bat1, 70);
-        (this.getImagenes()).sumaCuadro(bat2, 70);
-        (this.getImagenes()).sumaCuadro(bat3, 70);
+        Image bomb1 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb1.png"));
+        Image bomb2 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb2.png"));
+        Image bomb3 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb3.png"));
+        Image bomb4 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb4.png"));
+        Image bomb5 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb5.png"));
+        Image bomb6 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb6.png"));
+        Image bomb7 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb7.png"));
+        Image bomb8 = Toolkit.getDefaultToolkit().getImage(this.getClass().getResource("Images/bomb8.png"));
+        (this.getImagenes()).sumaCuadro(bomb1, 70);
+        (this.getImagenes()).sumaCuadro(bomb2, 70);
+        (this.getImagenes()).sumaCuadro(bomb3, 70);
+        (this.getImagenes()).sumaCuadro(bomb4, 70);
+        (this.getImagenes()).sumaCuadro(bomb5, 70);
+        (this.getImagenes()).sumaCuadro(bomb6, 70);
+        (this.getImagenes()).sumaCuadro(bomb7, 70);
+        (this.getImagenes()).sumaCuadro(bomb8, 70);
     }
     //@param  es para conocer cual contador se pondra de tipo <code>int</code>
 
