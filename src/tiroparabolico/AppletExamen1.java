@@ -34,7 +34,6 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     private Malo bomba;
     private Graphics dbg;               //Objeto tipo Graphics
     private Image dbImage;              //Imagen para el doblebuffer  
-    private Image background;
     private long tiempoActual;          //Long para el tiempo del applet
     private boolean movimiento;         //Booleano si esta en movimient
     private boolean bombamueve;
