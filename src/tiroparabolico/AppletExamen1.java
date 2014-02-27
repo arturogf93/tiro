@@ -42,7 +42,8 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     private int direccion;              //entero para la direccion
     private SoundClip chCacha;          //audio para el heroe
     private SoundClip chFalla;          //audio para las paredes
-   
+    private int vidas;
+    private int contcaidas;
     private FileWriter file;
     private PrintWriter out;
     private boolean guarda;
@@ -61,6 +62,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      */
     public void init() throws IOException {
         this.setSize(1000, 650);
+        vidas = 5;
         addKeyListener(this);
         direccion = 0;                  //Se inicializa a 0 la direccion (no se mueve)
         setBackground(Color.RED);     //fondo negra
@@ -76,9 +78,9 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         //URL choURL = this.getClass().getResource("chocaPared.wav");
         chFalla = new SoundClip("Sounds/chocaPared.wav");
 
-        file = new FileWriter("/Users/Gonzalez/Desktop/hola.txt");
+        file = new FileWriter("hola.txt");
         out = new PrintWriter(file);
-        archivo = new File("/Users/Gonzalez/Desktop/hola.txt");
+        archivo = new File("hola.txt");
         fr = new FileReader(archivo);
         br = new BufferedReader(fr);
         guarda = false;
@@ -155,7 +157,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         //Auqie empieza a guardad datos en el archivo
         if (guarda) {
             //try {
-                file = new FileWriter("/Users/Gonzalez/Desktop/hola.txt");
+                file = new FileWriter("hola.txt");
                 out = new PrintWriter(file);
                 out.println(bomba.getPosX());
                 out.println(bomba.getPosY());
@@ -169,7 +171,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         //Aqui carga los datos del archivo
         if (carga) {
                 // Se abre del archivo 
-                archivo = new File("/Users/Gonzalez/Desktop/hola.txt");
+                archivo = new File("hola.txt");
                 fr = new FileReader(archivo);
                 br = new BufferedReader(fr);
                 // Lectura del archivo
@@ -180,8 +182,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                     int foo = Integer.parseInt(linea);
                     arr[cont]=foo;
                     cont++;
-                
-            } 
+                } 
               //vya++;
               bomba.setPosX(arr[0]);
               bomba.setPosY(arr[1]);
@@ -190,6 +191,15 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
               bombamueve=true;
         }
         carga = false;
+        if(heroe.intersecta(bomba)){
+            bomba.setPosX(30);
+            bomba.setPosY(330);
+            bombamueve=false;
+            vx = (int) (Math.random() * 3) + 10; 
+            vy = -( (int)(Math.random() * 4) + 20);
+            chCacha.play();
+            bomba.setScore(bomba.getScore()+2);
+        }
         
         //cuando la bomba sale por abajo
         if(bomba.getPosY()>this.getHeight()) {
@@ -198,7 +208,12 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             bombamueve=false;
             vx = (int) (Math.random() * 3) + 10; 
             vy = -( (int)(Math.random() * 4) + 20);
-
+            contcaidas++;
+            chFalla.play();
+            if (contcaidas >=3){
+                vidas--;
+                contcaidas=0;
+            } 
         }
 
     }
@@ -323,6 +338,9 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             //Dibuja la imagen en la posicion actualizada
             g.drawImage(heroe.getImagen(), heroe.getPosX(), heroe.getPosY(), this);
             g.drawImage(bomba.getImagen(), bomba.getPosX(), bomba.getPosY(), this);
+            g.setColor(Color.WHITE);
+            g.drawString("Puntaje: " + bomba.getScore(), 20, 50);
+            g.drawString("Vidas    : " + vidas, 20, 65);
             if (pausa) {
                 g.setColor(Color.WHITE);
                 g.drawString("" + heroe.getPAUSADO(), heroe.getPosX() - heroe.getWidth() / 7, heroe.getPosY() + (heroe.getHeight() / 2));
