@@ -5,6 +5,7 @@
  */
 package tiroparabolico;
 
+import java.io.IOException;
 import javax.swing.JFrame;
 
 /**
@@ -18,7 +19,7 @@ public class TiroParabolico{
 
     }
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         AppletExamen1 variable;
         variable = new AppletExamen1();
         variable.setVisible(true);
