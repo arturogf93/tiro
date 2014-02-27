@@ -81,7 +81,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         br = new BufferedReader(fr);
         guarda = false;
         carga = false;
-        arr=new int[4]; 
+        arr=new int[10]; 
         if ((int)(Math.random() * 2)==1){
             vx = (int) (Math.random() * 3) + 17; 
             vy = -( (int)(Math.random() * 4) + 15);
@@ -163,6 +163,10 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 out.println(bomba.getPosY());
                 out.println(heroe.getPosX());
                 out.println(vy);
+                out.println(vx);
+                out.println(vidas);
+                out.println(contcaidas);
+                out.println(bomba.getScore());
                 file.close();
             guarda=false;
         }
@@ -183,11 +187,14 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                     arr[cont]=foo;
                     cont++;
                 } 
-              //vya++;
               bomba.setPosX(arr[0]);
               bomba.setPosY(arr[1]);
               heroe.setPosX(arr[2]);
               vy=arr[3];
+              vx=arr[4];
+              vidas=arr[5];
+              contcaidas=arr[6];
+              bomba.setScore(arr[7]);
               bombamueve=true;
         }
         carga = false;
