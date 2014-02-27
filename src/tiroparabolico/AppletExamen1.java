@@ -16,10 +16,16 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.Toolkit;
+import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import static java.lang.System.out;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AppletExamen1 extends JFrame implements Runnable, KeyListener, MouseListener, MouseMotionListener {
 
-    public AppletExamen1() {
+    public AppletExamen1() throws IOException {
         init();
         start();
     }
@@ -27,7 +33,8 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     private Bueno heroe;                //Objeto tipo Bueno
     private Malo bomba;
     private Graphics dbg;               //Objeto tipo Graphics
-    private Image dbImage;              //Imagen para el doblebuffer    
+    private Image dbImage;              //Imagen para el doblebuffer  
+    private Image background;
     private long tiempoActual;          //Long para el tiempo del applet
     private boolean movimiento;         //Booleano si esta en movimient
     private boolean bombamueve;
@@ -35,20 +42,31 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     private int direccion;              //entero para la direccion
     private SoundClip chCacha;          //audio para el heroe
     private SoundClip chFalla;          //audio para las paredes
+   
+    private FileWriter file;
+    private PrintWriter out;
+    private boolean guarda;
+    private boolean carga;
+    private File archivo;
+    private FileReader fr;
+    private BufferedReader br;
+    private int arr[];
+    private int vx;
+    private int vy;
 
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>Applet</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos a
      * usarse en el <code>Applet</code> y se definen funcionalidades.
      */
-    public void init() {
+    public void init() throws IOException {
         this.setSize(1000, 650);
         addKeyListener(this);
         direccion = 0;                  //Se inicializa a 0 la direccion (no se mueve)
         setBackground(Color.RED);     //fondo negra
         movimiento = false;             // al principi esta quirto
         heroe = new Bueno(0, 0);
-        bomba = new Malo(30, 30, 0, 0);
+        bomba = new Malo(30, 330, 0, 0);
         heroe.setPosX((this.getWidth() * 6) / 8 - (new ImageIcon(heroe.getImagen())).getIconWidth() / 2);   //posicion x del Bueno
         heroe.setPosY(this.getHeight() - (new ImageIcon(heroe.getImagen())).getIconHeight() - 2);    //posicion y del Bueno
         addMouseListener(this);
@@ -57,6 +75,19 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         chCacha = new SoundClip("Sounds/chocaHeroe.wav");
         //URL choURL = this.getClass().getResource("chocaPared.wav");
         chFalla = new SoundClip("Sounds/chocaPared.wav");
+
+        file = new FileWriter("/Users/Gonzalez/Desktop/hola.txt");
+        out = new PrintWriter(file);
+        archivo = new File("/Users/Gonzalez/Desktop/hola.txt");
+        fr = new FileReader(archivo);
+        br = new BufferedReader(fr);
+        guarda = false;
+        carga = false;
+        arr=new int[4]; 
+        
+        vx = (int) (Math.random() * 3) + 17; 
+	vy = -( (int)(Math.random() * 4) + 15);
+
     }
 
     public void start() {
@@ -76,7 +107,11 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     public void run() {
         while (true) {
             if (!pausa) {
-                actualiza();
+                try {
+                    actualiza();
+                } catch (IOException ex) {
+                    Logger.getLogger(AppletExamen1.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 checaColision();
             }
             repaint();    // Se actualiza el <code>Applet</code> repintando el contenido.
@@ -93,22 +128,79 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      * Metodo usado para actualizar la posicion de objetos elefante y raton.
      *
      */
-    public void actualiza() {
+    public void actualiza() throws IOException {
         //if(movimiento){
         long tiempoTranscurrido = System.currentTimeMillis() - tiempoActual;
 
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
+
+
         //Actualiza la animación en base al tiempo transcurrido
         if (bombamueve) {
             (bomba.getImagenes()).actualiza(tiempoActual);
+            vy++;
+            bomba.setPosX(bomba.getPosX()+vx);
+            bomba.setPosY(bomba.getPosY()+vy);
         }
+        
         if (movimiento) {//Si se mueve se actualiza
             (heroe.getImagenes()).actualiza(tiempoActual);
+
         }
         heroe.setPosX(heroe.getPosX() + direccion);
         direccion = 0;
+
+        //Auqie empieza a guardad datos en el archivo
+        if (guarda) {
+            //try {
+                file = new FileWriter("/Users/Gonzalez/Desktop/hola.txt");
+                out = new PrintWriter(file);
+                out.println(bomba.getPosX());
+                out.println(bomba.getPosY());
+                out.println(heroe.getPosX());
+                out.println(vy);
+                file.close();
+            guarda=false;
+        }
+        //Aqui termina de guardar datos
+        
+        //Aqui carga los datos del archivo
+        if (carga) {
+                // Se abre del archivo 
+                archivo = new File("/Users/Gonzalez/Desktop/hola.txt");
+                fr = new FileReader(archivo);
+                br = new BufferedReader(fr);
+                // Lectura del archivo
+                String linea;
+                int cont=0;
+                while ((linea = br.readLine()) != null) {
+                    System.out.println(linea);
+                    int foo = Integer.parseInt(linea);
+                    arr[cont]=foo;
+                    cont++;
+                
+            } 
+              //vya++;
+              bomba.setPosX(arr[0]);
+              bomba.setPosY(arr[1]);
+              heroe.setPosX(arr[2]);
+              vy=arr[3];
+              bombamueve=true;
+        }
+        carga = false;
+        
+        //cuando la bomba sale por abajo
+        if(bomba.getPosY()>this.getHeight()) {
+            bomba.setPosX(30);
+            bomba.setPosY(330);
+            bombamueve=false;
+            vx = (int) (Math.random() * 3) + 10; 
+            vy = -( (int)(Math.random() * 4) + 20);
+
+        }
+
     }
 
     /**
@@ -122,6 +214,8 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         } else {
             movimiento = false;
         }
+
+        //bomba.colision(this.getHeight(), this.getHeight());
     }
 
     /**
@@ -162,11 +256,11 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         // Presiono izq
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             movimiento = true;
-            direccion = -2;
+            direccion = -10;
         } //Presiono der
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             movimiento = true;
-            direccion = 2;
+            direccion = 10;
         } else {
             direccion = 0;
             movimiento = false;
@@ -200,6 +294,16 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 pausa = false;
             } else {
                 pausa = true;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_G) {  //dejo de presionar la tecla de arriba
+            if (!guarda) {
+                guarda = true;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_C) {  //dejo de presionar la tecla de arriba
+            if (!carga) {
+                carga = true;
             }
         }
 
