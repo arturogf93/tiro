@@ -86,10 +86,14 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         guarda = false;
         carga = false;
         arr=new int[4]; 
-        
-        vx = (int) (Math.random() * 3) + 17; 
-	vy = -( (int)(Math.random() * 4) + 15);
-
+        if ((int)(Math.random() * 2)==1){
+            vx = (int) (Math.random() * 3) + 17; 
+            vy = -( (int)(Math.random() * 4) + 15);
+        }
+        else{
+            vx = (int) (Math.random() * 3) + 10; 
+            vy = -( (int)(Math.random() * 4) + 20);
+        }
     }
 
     public void start() {
@@ -195,8 +199,14 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             bomba.setPosX(30);
             bomba.setPosY(330);
             bombamueve=false;
-            vx = (int) (Math.random() * 3) + 10; 
-            vy = -( (int)(Math.random() * 4) + 20);
+            if ((int)(Math.random() * 2)==1){
+                vx = (int) (Math.random() * 3) + 17; 
+                vy = -( (int)(Math.random() * 4) + 15);
+            }
+            else{
+                vx = (int) (Math.random() * 3) + 10; 
+                vy = -( (int)(Math.random() * 4) + 20);
+            }
             chCacha.play();
             bomba.setScore(bomba.getScore()+2);
         }
@@ -206,8 +216,14 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             bomba.setPosX(30);
             bomba.setPosY(330);
             bombamueve=false;
-            vx = (int) (Math.random() * 3) + 10; 
-            vy = -( (int)(Math.random() * 4) + 20);
+            if ((int)(Math.random() * 2)==1){
+                vx = (int) (Math.random() * 3) + 17; 
+                vy = -( (int)(Math.random() * 4) + 15);
+            }
+            else{
+                vx = (int) (Math.random() * 3) + 10; 
+                vy = -( (int)(Math.random() * 4) + 20);
+            }
             contcaidas++;
             chFalla.play();
             if (contcaidas >=3){
