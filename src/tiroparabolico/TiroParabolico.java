@@ -12,18 +12,17 @@ import javax.swing.JFrame;
  *
  * @author Abraham
  */
-public class TiroParabolico{
+public class TiroParabolico {
 
-    
-    public TiroParabolico(){
+    public TiroParabolico() {
 
     }
-    
+
     public static void main(String[] args) throws IOException {
         AppletExamen1 variable;
         variable = new AppletExamen1();
         variable.setVisible(true);
         variable.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    
+
 }
