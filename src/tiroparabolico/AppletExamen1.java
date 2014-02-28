@@ -186,6 +186,16 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             } else {
                 out.println(0);
             }
+            if (info) {
+                out.println(1);
+            } else {
+                out.println(0);
+            }
+            if (gameover) {
+                out.println(1);
+            } else {
+                out.println(0);
+            }
 
             file.close();
             guarda = false;
@@ -224,6 +234,16 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 sound = true;
             } else {
                 sound = false;
+            }
+            if (arr[10] == 1) {
+                info = true;
+            } else {
+                info = false;
+            }
+            if (arr[11] == 1) {
+                gameover = true;
+            } else {
+                gameover = false;
             }
 
             //bombamueve = true;  //GRABA TAMBIEN EL SOUND y el BOMBAMUEVE
