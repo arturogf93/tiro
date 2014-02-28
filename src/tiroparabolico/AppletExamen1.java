@@ -164,7 +164,6 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
 
         }
         heroe.setPosX(heroe.getPosX() + direccion);
-        direccion = 0;
 
         //Auqie empieza a guardad datos en el archivo
         if (guarda) {
@@ -262,7 +261,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      */
     public void checaColision() {
         heroe.colision(this.getWidth(), this.getHeight());        //Checa colision del heroe con el applet
-        if (direccion == 1 && direccion == 2) {
+        if (direccion !=0) {
             movimiento = true;
         } else {
             movimiento = false;
@@ -314,9 +313,6 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             movimiento = true;
             direccion = vidas*2;
-        } else {
-            direccion = 0;
-            movimiento = false;
         }
     }
 
@@ -375,6 +371,13 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             else{
                 info = false;
             }
+        }
+        
+        if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            direccion = 0;
+        } //Presiono der
+        if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            direccion = 0;
         }
         // Presiono izq
     }
