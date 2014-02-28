@@ -30,33 +30,33 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     }
 
     private Bueno heroe;                //Objeto tipo Bueno
-    private Malo bomba;
+    private Malo bomba;                 //objeto tipo bomba
     private Graphics dbg;               //Objeto tipo Graphics
     private Image dbImage;              //Imagen para el doblebuffer  
     private long tiempoActual;          //Long para el tiempo del applet
     private boolean movimiento;         //Booleano si esta en movimient
-    private boolean bombamueve;
+    private boolean bombamueve;         //Booleano para saber si se mueve la bomba
     private boolean pausa;              //Booleando para pausa
     private int direccion;              //entero para la direccion
     private SoundClip chCacha;          //audio para el heroe
     private SoundClip chFalla;          //audio para las paredes
-    private int vidas;
-    private int contcaidas;
-    private FileWriter file;
-    private PrintWriter out;
-    private boolean guarda;
-    private boolean carga;
-    private File archivo;
-    private FileReader fr;
-    private BufferedReader br;
-    private int arr[];
-    private int vx;
-    private int vy;
-    private boolean gameover;
-    private Image im_over;
-    private boolean sound;
-    private Image informacion;
-    private boolean info;
+    private int vidas;                  //entero para las vidas
+    private int contcaidas;             //entero para saber cuantas bombas han caido
+    private FileWriter file;            //un FileWriter para el manejo de archivos
+    private PrintWriter out;            //un Printwriter para el manejo de archivos
+    private boolean guarda;             //flag para saber si se guarda
+    private boolean carga;              //flag para saber si se carga
+    private File archivo;               //File para el archivo a crear
+    private FileReader fr;              //fileReader para la lectura del archivo
+    private BufferedReader br;          //Para leer las variables del archivo
+    private int arr[];                  //arreglo para guardar las variables
+    private int vx;                     //velocidad en x
+    private int vy;                     //velocidad en y
+    private boolean gameover;           //flag para el gameover
+    private Image im_over;              //imagen del gameover
+    private boolean sound;              //flag para saber si se hace sonido
+    private Image informacion;          //imagen de la informacion
+    private boolean info;               //flag para saber si se despliega la informacion
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>Applet</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos a
@@ -206,7 +206,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
               vidas=arr[5];
               contcaidas=arr[6];
               bomba.setScore(arr[7]);
-              bombamueve=true;  //Y GRABA TAMBIEN EL SOUND 
+              bombamueve=true;  //GRABA TAMBIEN EL SOUND y el BOMBAMUEVE
         }
         carga = false;
         if(heroe.intersecta(bomba)){
@@ -228,7 +228,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         }
         
         //cuando la bomba sale por abajo
-        if(bomba.getPosY()>this.getHeight()) {
+        if(bomba.getPosY()>=this.getHeight()) {
            
             bomba.setPosX(30);
             bomba.setPosY(330);
@@ -379,6 +379,13 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         } //Presiono der
         if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             direccion = 0;
+        }
+        if (e.getKeyCode() == KeyEvent.VK_N) {
+            if (vidas <= 0){
+                vidas = 5;
+                bomba.setScore(0);
+                gameover=false;
+            }
         }
         // Presiono izq
     }
