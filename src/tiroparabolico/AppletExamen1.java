@@ -57,6 +57,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     private boolean sound;              //flag para saber si se hace sonido
     private Image informacion;          //imagen de la informacion
     private boolean info;               //flag para saber si se despliega la informacion
+
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>Applet</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos a
@@ -89,14 +90,13 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         br = new BufferedReader(fr);
         guarda = false;
         carga = false;
-        arr=new int[10]; 
-        if ((int)(Math.random() * 2)==1){
-            vx = (int) (Math.random() * 3) + 17; 
-            vy = -( (int)(Math.random() * 4) + 15);
-        }
-        else{
-            vx = (int) (Math.random() * 3) + 10; 
-            vy = -( (int)(Math.random() * 4) + 20);
+        arr = new int[12];
+        if ((int) (Math.random() * 2) == 1) {
+            vx = (int) (Math.random() * 3) + 17;
+            vy = -((int) (Math.random() * 4) + 15);
+        } else {
+            vx = (int) (Math.random() * 3) + 10;
+            vy = -((int) (Math.random() * 4) + 20);
         }
         URL gURL = this.getClass().getResource("Images/Creditos.png");
         im_over = Toolkit.getDefaultToolkit().getImage(gURL);
@@ -149,16 +149,14 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         //Guarda el tiempo actual
         tiempoActual += tiempoTranscurrido;
 
-
-
         //Actualiza la animación en base al tiempo transcurrido
         if (bombamueve && !info) {
             (bomba.getImagenes()).actualiza(tiempoActual);
             vy++;
-            bomba.setPosX(bomba.getPosX()+vx);
-            bomba.setPosY(bomba.getPosY()+vy);
+            bomba.setPosX(bomba.getPosX() + vx);
+            bomba.setPosY(bomba.getPosY() + vy);
         }
-        
+
         if (movimiento) {//Si se mueve se actualiza
             (heroe.getImagenes()).actualiza(tiempoActual);
 
@@ -168,89 +166,109 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         //Auqie empieza a guardad datos en el archivo
         if (guarda && !info) {
             //try {
-                file = new FileWriter("hola.txt");
-                out = new PrintWriter(file);
-                out.println(bomba.getPosX());
-                out.println(bomba.getPosY());
-                out.println(heroe.getPosX());
-                out.println(vy);
-                out.println(vx);
-                out.println(vidas);
-                out.println(contcaidas);
-                out.println(bomba.getScore());
-                file.close();
-            guarda=false;
+            file = new FileWriter("hola.txt");
+            out = new PrintWriter(file);
+            out.println(bomba.getPosX());
+            out.println(bomba.getPosY());
+            out.println(heroe.getPosX());
+            out.println(vy);
+            out.println(vx);
+            out.println(vidas);
+            out.println(contcaidas);
+            out.println(bomba.getScore());
+            if (bombamueve) {
+                out.println(1);
+            } else {
+                out.println(0);
+            }
+            if (sound) {
+                out.println(1);
+            } else {
+                out.println(0);
+            }
+
+            file.close();
+            guarda = false;
         }
         //Aqui termina de guardar datos
-        
+
         //Aqui carga los datos del archivo
         if (carga) {
-                // Se abre del archivo 
-                archivo = new File("hola.txt");
-                fr = new FileReader(archivo);
-                br = new BufferedReader(fr);
-                // Lectura del archivo
-                String linea;
-                int cont=0;
-                while ((linea = br.readLine()) != null) {
-                    System.out.println(linea);
-                    int foo = Integer.parseInt(linea);
-                    arr[cont]=foo;
-                    cont++;
-                } 
-              bomba.setPosX(arr[0]);
-              bomba.setPosY(arr[1]);
-              heroe.setPosX(arr[2]);
-              vy=arr[3];
-              vx=arr[4];
-              vidas=arr[5];
-              contcaidas=arr[6];
-              bomba.setScore(arr[7]);
-              bombamueve=true;  //GRABA TAMBIEN EL SOUND y el BOMBAMUEVE
+            // Se abre del archivo 
+            archivo = new File("hola.txt");
+            fr = new FileReader(archivo);
+            br = new BufferedReader(fr);
+            // Lectura del archivo
+            String linea;
+            int cont = 0;
+            while ((linea = br.readLine()) != null) {
+                System.out.println(linea);
+                int foo = Integer.parseInt(linea);
+                arr[cont] = foo;
+                cont++;
+            }
+            bomba.setPosX(arr[0]);
+            bomba.setPosY(arr[1]);
+            heroe.setPosX(arr[2]);
+            vy = arr[3];
+            vx = arr[4];
+            vidas = arr[5];
+            contcaidas = arr[6];
+            bomba.setScore(arr[7]);
+            if (arr[8] == 1) {
+                bombamueve = true;
+            } else {
+                bombamueve = false;
+            }
+            if (arr[9] == 1) {
+                sound = true;
+            } else {
+                sound = false;
+            }
+
+            //bombamueve = true;  //GRABA TAMBIEN EL SOUND y el BOMBAMUEVE
         }
         carga = false;
-        if(heroe.intersecta(bomba)){
+        if (heroe.intersecta(bomba)) {
             bomba.setPosX(30);
             bomba.setPosY(330);
-            bombamueve=false;
-            if ((int)(Math.random() * 2)==1){
-                vx = (int) (Math.random() * 3) + 17; 
-                vy = -( (int)(Math.random() * 4) + 15);
+            bombamueve = false;
+            if ((int) (Math.random() * 2) == 1) {
+                vx = (int) (Math.random() * 3) + 17;
+                vy = -((int) (Math.random() * 4) + 15);
+            } else {
+                vx = (int) (Math.random() * 3) + 10;
+                vy = -((int) (Math.random() * 4) + 20);
             }
-            else{
-                vx = (int) (Math.random() * 3) + 10; 
-                vy = -( (int)(Math.random() * 4) + 20);
-            }
-            if (sound){
+            if (sound) {
                 chCacha.play();
             }
-            bomba.setScore(bomba.getScore()+2);
+            bomba.setScore(bomba.getScore() + 2);
         }
-        
+
         //cuando la bomba sale por abajo
-        if(bomba.getPosY()>=this.getHeight()) {
-           
+        if (bomba.getPosY() >= this.getHeight()) {
+
             bomba.setPosX(30);
             bomba.setPosY(330);
-            bombamueve=false;
-            if ((int)(Math.random() * 2)==1){
-                vx = (int) (Math.random() * 3) + 17; 
-                vy = -( (int)(Math.random() * 4) + 15);
-            }
-            else{
-                vx = (int) (Math.random() * 3) + 10; 
-                vy = -( (int)(Math.random() * 4) + 20);
+            bombamueve = false;
+            if ((int) (Math.random() * 2) == 1) {
+                vx = (int) (Math.random() * 3) + 17;
+                vy = -((int) (Math.random() * 4) + 15);
+            } else {
+                vx = (int) (Math.random() * 3) + 10;
+                vy = -((int) (Math.random() * 4) + 20);
             }
             contcaidas++;
-             if (sound){
+            if (sound) {
                 chFalla.play();
             }
-            if (contcaidas >=3){
+            if (contcaidas >= 3) {
                 vidas--;
-                contcaidas=0;
-            } 
+                contcaidas = 0;
+            }
         }
-        if (vidas <=0){
+        if (vidas <= 0) {
             gameover = true;
         }
 
@@ -262,7 +280,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      */
     public void checaColision() {
         heroe.colision(this.getWidth(), this.getHeight());        //Checa colision del heroe con el applet
-        if (direccion !=0) {
+        if (direccion != 0) {
             movimiento = true;
         } else {
             movimiento = false;
@@ -309,11 +327,11 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         // Presiono izq
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             movimiento = true;
-            direccion = -(vidas*2);
+            direccion = -(vidas * 2);
         } //Presiono der
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             movimiento = true;
-            direccion = vidas*2;
+            direccion = vidas * 2;
         }
     }
 
@@ -356,24 +374,22 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 carga = true;
             }
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_S) {  //dejo de presionar la tecla de arriba
             if (!sound) {
                 sound = true;
-            }
-            else{
+            } else {
                 sound = false;
             }
         }
         if (e.getKeyCode() == KeyEvent.VK_I) {  //dejo de presionar la tecla de arriba
             if (!info) {
                 info = true;
-            }
-            else{
+            } else {
                 info = false;
             }
         }
-        
+
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             direccion = 0;
         } //Presiono der
@@ -381,10 +397,10 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             direccion = 0;
         }
         if (e.getKeyCode() == KeyEvent.VK_N) {
-            if (vidas <= 0){
+            if (vidas <= 0) {
                 vidas = 5;
                 bomba.setScore(0);
-                gameover=false;
+                gameover = false;
             }
         }
         // Presiono izq
@@ -400,14 +416,12 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      */
     public void paint1(Graphics g) {
         if (heroe != null && bomba != null) {
-            if (gameover){
+            if (gameover) {
                 g.drawImage(im_over, 0, 30, this);
-            }
-            else{
-                if (info){
+            } else {
+                if (info) {
                     g.drawImage(informacion, 0, 0, this);
-                }
-                else{
+                } else {
                     //Dibuja la imagen en la posicion actualizada
                     g.drawImage(heroe.getImagen(), heroe.getPosX(), heroe.getPosY(), this);
                     g.drawImage(bomba.getImagen(), bomba.getPosX(), bomba.getPosY(), this);
@@ -417,15 +431,14 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                         g.drawString("" + heroe.getPAUSADO(), heroe.getPosX() - heroe.getWidth() / 7, heroe.getPosY() + (heroe.getHeight() / 2));
                     }
                     g.setColor(Color.WHITE);
-                g.drawString("Puntaje: " + bomba.getScore(), 20, 50);
-                g.drawString("Vidas    : " + vidas, 20, 65);                
-                }                
+                    g.drawString("Puntaje: " + bomba.getScore(), 20, 50);
+                    g.drawString("Vidas    : " + vidas, 20, 65);
+                }
             }
-            if (sound){
-                g.drawString("Sonido ON" ,this.getWidth()-75, 50);
-            }
-            else{
-                g.drawString("Sonido OFF" ,this.getWidth()-75, 50);
+            if (sound) {
+                g.drawString("Sonido ON", this.getWidth() - 75, 50);
+            } else {
+                g.drawString("Sonido OFF", this.getWidth() - 75, 50);
             }
         } else {
             //Da un mensaje mientras se carga el dibujo	
