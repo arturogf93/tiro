@@ -69,4 +69,11 @@ public class Malo extends Base {
     public int getScore() {
         return this.score;
     }
+    
+        public void colision(int width, int height) {       //Metodo para saber si colisiono con el applet
+        if (this.getPosX() + this.getWidth() >= height) {
+            this.setPosX(30);
+            this.setPosY(230);
+        }
+    }
 }
