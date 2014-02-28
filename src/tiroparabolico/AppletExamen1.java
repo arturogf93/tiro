@@ -152,7 +152,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
 
 
         //Actualiza la animación en base al tiempo transcurrido
-        if (bombamueve) {
+        if (bombamueve && !info) {
             (bomba.getImagenes()).actualiza(tiempoActual);
             vy++;
             bomba.setPosX(bomba.getPosX()+vx);
@@ -166,7 +166,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         heroe.setPosX(heroe.getPosX() + direccion);
 
         //Auqie empieza a guardad datos en el archivo
-        if (guarda) {
+        if (guarda && !info) {
             //try {
                 file = new FileWriter("hola.txt");
                 out = new PrintWriter(file);
@@ -229,6 +229,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         
         //cuando la bomba sale por abajo
         if(bomba.getPosY()>this.getHeight()) {
+           
             bomba.setPosX(30);
             bomba.setPosY(330);
             bombamueve=false;
