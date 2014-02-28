@@ -165,7 +165,6 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
 
         //Auqie empieza a guardad datos en el archivo
         if (guarda && !info) {
-            //try {
             file = new FileWriter("hola.txt");
             out = new PrintWriter(file);
             out.println(bomba.getPosX());
