@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Color;
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.ImageIcon;
@@ -17,6 +18,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -50,7 +52,11 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
     private int arr[];
     private int vx;
     private int vy;
-
+    private boolean gameover;
+    private Image im_over;
+    private boolean sound;
+    private Image informacion;
+    private boolean info;
     /**
      * Metodo <I>init</I> sobrescrito de la clase <code>Applet</code>.<P>
      * En este metodo se inizializan las variables o se crean los objetos a
@@ -58,10 +64,13 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      */
     public void init() throws IOException {
         this.setSize(1000, 650);
+        info = false;
+        sound = true;
+        gameover = false;
         vidas = 5;
         addKeyListener(this);
         direccion = 0;                  //Se inicializa a 0 la direccion (no se mueve)
-        setBackground(Color.RED);     //fondo negra
+        setBackground(Color.BLACK);     //fondo negra
         movimiento = false;             // al principi esta quirto
         heroe = new Bueno(0, 0);
         bomba = new Malo(30, 330, 0, 0);
@@ -73,7 +82,6 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         chCacha = new SoundClip("Sounds/chocaHeroe.wav");
         //URL choURL = this.getClass().getResource("chocaPared.wav");
         chFalla = new SoundClip("Sounds/chocaPared.wav");
-
         file = new FileWriter("hola.txt");
         out = new PrintWriter(file);
         archivo = new File("hola.txt");
@@ -90,6 +98,10 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
             vx = (int) (Math.random() * 3) + 10; 
             vy = -( (int)(Math.random() * 4) + 20);
         }
+        URL gURL = this.getClass().getResource("Images/Creditos.png");
+        im_over = Toolkit.getDefaultToolkit().getImage(gURL);
+        URL iURL = this.getClass().getResource("Images/info.png");
+        informacion = Toolkit.getDefaultToolkit().getImage(iURL);
     }
 
     public void start() {
@@ -210,7 +222,9 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 vx = (int) (Math.random() * 3) + 10; 
                 vy = -( (int)(Math.random() * 4) + 20);
             }
-            chCacha.play();
+            if (sound){
+                chCacha.play();
+            }
             bomba.setScore(bomba.getScore()+2);
         }
         
@@ -228,11 +242,16 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 vy = -( (int)(Math.random() * 4) + 20);
             }
             contcaidas++;
-            chFalla.play();
+             if (sound){
+                chFalla.play();
+            }
             if (contcaidas >=3){
                 vidas--;
                 contcaidas=0;
             } 
+        }
+        if (vidas <=0){
+            gameover = true;
         }
 
     }
@@ -290,11 +309,11 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         // Presiono izq
         if (e.getKeyCode() == KeyEvent.VK_LEFT) {
             movimiento = true;
-            direccion = -10;
+            direccion = -(vidas*2);
         } //Presiono der
         else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
             movimiento = true;
-            direccion = 10;
+            direccion = vidas*2;
         } else {
             direccion = 0;
             movimiento = false;
@@ -340,7 +359,23 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 carga = true;
             }
         }
-
+        
+        if (e.getKeyCode() == KeyEvent.VK_S) {  //dejo de presionar la tecla de arriba
+            if (!sound) {
+                sound = true;
+            }
+            else{
+                sound = false;
+            }
+        }
+        if (e.getKeyCode() == KeyEvent.VK_I) {  //dejo de presionar la tecla de arriba
+            if (!info) {
+                info = true;
+            }
+            else{
+                info = false;
+            }
+        }
         // Presiono izq
     }
 
@@ -354,17 +389,27 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
      */
     public void paint1(Graphics g) {
         if (heroe != null && bomba != null) {
-            //Dibuja la imagen en la posicion actualizada
-            g.drawImage(heroe.getImagen(), heroe.getPosX(), heroe.getPosY(), this);
-            g.drawImage(bomba.getImagen(), bomba.getPosX(), bomba.getPosY(), this);
-            g.setColor(Color.WHITE);
-            g.drawString("Puntaje: " + bomba.getScore(), 20, 50);
-            g.drawString("Vidas    : " + vidas, 20, 65);
-            if (pausa) {
-                g.setColor(Color.WHITE);
-                g.drawString("" + heroe.getPAUSADO(), heroe.getPosX() - heroe.getWidth() / 7, heroe.getPosY() + (heroe.getHeight() / 2));
+            if (gameover){
+                g.drawImage(im_over, 0, 30, this);
             }
-            g.setColor(Color.WHITE);
+            else{
+                if (info){
+                    g.drawImage(informacion, 0, 0, this);
+                }
+                else{
+                    //Dibuja la imagen en la posicion actualizada
+                    g.drawImage(heroe.getImagen(), heroe.getPosX(), heroe.getPosY(), this);
+                    g.drawImage(bomba.getImagen(), bomba.getPosX(), bomba.getPosY(), this);
+
+                    if (pausa) {
+                        g.setColor(Color.WHITE);
+                        g.drawString("" + heroe.getPAUSADO(), heroe.getPosX() - heroe.getWidth() / 7, heroe.getPosY() + (heroe.getHeight() / 2));
+                    }
+                    g.setColor(Color.WHITE);
+                g.drawString("Puntaje: " + bomba.getScore(), 20, 50);
+                g.drawString("Vidas    : " + vidas, 20, 65);                
+                }                
+            }
         } else {
             //Da un mensaje mientras se carga el dibujo	
             g.drawString("No se cargo la imagen..", 20, 20);
