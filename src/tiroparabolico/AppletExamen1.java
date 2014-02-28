@@ -102,6 +102,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
         im_over = Toolkit.getDefaultToolkit().getImage(gURL);
         URL iURL = this.getClass().getResource("Images/info.png");
         informacion = Toolkit.getDefaultToolkit().getImage(iURL);
+        //
     }
 
     public void start() {
