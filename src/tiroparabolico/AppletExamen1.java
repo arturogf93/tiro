@@ -206,7 +206,7 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
               vidas=arr[5];
               contcaidas=arr[6];
               bomba.setScore(arr[7]);
-              bombamueve=true;
+              bombamueve=true;  //Y GRABA TAMBIEN EL SOUND 
         }
         carga = false;
         if(heroe.intersecta(bomba)){
@@ -413,6 +413,12 @@ public class AppletExamen1 extends JFrame implements Runnable, KeyListener, Mous
                 g.drawString("Puntaje: " + bomba.getScore(), 20, 50);
                 g.drawString("Vidas    : " + vidas, 20, 65);                
                 }                
+            }
+            if (sound){
+                g.drawString("Sonido ON" ,this.getWidth()-75, 50);
+            }
+            else{
+                g.drawString("Sonido OFF" ,this.getWidth()-75, 50);
             }
         } else {
             //Da un mensaje mientras se carga el dibujo	
